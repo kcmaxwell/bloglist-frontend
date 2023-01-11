@@ -6,6 +6,7 @@ module.exports = {
     jest: true,
   },
   extends: [
+    'plugin:react/recommended',
     'react-app',
     'airbnb-base',
   ],
@@ -14,6 +15,10 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
   },
+  plugins: [
+    'react',
+    'jest'
+  ],
   rules: {
     'no-console': 'off',
     'no-underscore-dangle': 'off',
