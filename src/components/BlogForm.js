@@ -12,6 +12,7 @@ function BlogForm({
 }) {
   return (
     <div>
+        <h2>Create new blog</h2>
       <form onSubmit={addBlog}>
         <div>
           Title:
