@@ -21,10 +21,18 @@ const create = async (newBlog) => {
   return response.data;
 };
 
+const increaseLikes = async (blog) => {
+  const updatedBlog = { ...blog, likes: blog.likes + 1 };
+
+  const response = await axios.put(`${baseUrl}/${blog.id}`, updatedBlog);
+  return response.data;
+};
+
 const blogService = {
   getAll,
   create,
   setToken,
+  increaseLikes,
 };
 
 export default blogService;

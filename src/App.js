@@ -71,6 +71,13 @@ const App = () => {
     blogFormRef.current.toggleVisibility();
   };
 
+  const addLike = async (wrappedBlog) => {
+    const likedBlog = wrappedBlog.blog;
+    const updatedBlog = await blogService.increaseLikes(likedBlog);
+    const newBlogs = blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog));
+    setBlogs(newBlogs);
+  };
+
   if (user === null) {
     return (
       <div>
@@ -90,7 +97,7 @@ const App = () => {
       <Notification message={successMessage} isError={false} />
       <Notification message={errorMessage} isError={true} />
       <h2>Blogs</h2>
-      {blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
+      {blogs.map((blog) => <Blog key={blog.id} blog={blog} addLike={addLike} />)}
 
       <Togglable buttonLabel='Add new blog' ref={blogFormRef}>
         <BlogForm
