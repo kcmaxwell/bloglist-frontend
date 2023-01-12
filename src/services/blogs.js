@@ -28,11 +28,20 @@ const increaseLikes = async (blog) => {
   return response.data;
 };
 
+const deleteBlog = async (blog) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.delete(`${baseUrl}/${blog.id}`, config);
+  return response;
+};
+
 const blogService = {
   getAll,
   create,
   setToken,
   increaseLikes,
+  deleteBlog,
 };
 
 export default blogService;

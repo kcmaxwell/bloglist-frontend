@@ -49,7 +49,8 @@ const App = () => {
 
     try {
       const newUser = await loginService.login({
-        username, password,
+        username,
+        password,
       });
       setUser(newUser);
       window.localStorage.setItem('loggedUser', JSON.stringify(newUser));
@@ -66,16 +67,25 @@ const App = () => {
     const returnedBlog = await blogService.create(blogObject);
     setBlogs(blogs.concat(returnedBlog));
 
-    displaySuccessMessage(`New blog added: ${blogObject.title} by ${blogObject.author}`);
+    displaySuccessMessage(
+      `New blog added: ${blogObject.title} by ${blogObject.author}`,
+    );
 
     blogFormRef.current.toggleVisibility();
   };
 
-  const addLike = async (wrappedBlog) => {
-    const likedBlog = wrappedBlog.blog;
+  const addLike = async (likedBlog) => {
     const updatedBlog = await blogService.increaseLikes(likedBlog);
     const newBlogs = blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog));
     setBlogs(newBlogs);
+  };
+
+  const deleteBlog = async (blogToDelete) => {
+    const response = await blogService.deleteBlog(blogToDelete);
+    if (response.status === 204) {
+      const newBlogs = blogs.filter((blog) => blog.id !== blogToDelete.id);
+      setBlogs(newBlogs);
+    }
   };
 
   if (user === null) {
@@ -88,7 +98,8 @@ const App = () => {
           username={username}
           setUsername={setUsername}
           password={password}
-          setPassword={setPassword} />
+          setPassword={setPassword}
+        />
       </div>
     );
   }
@@ -99,15 +110,25 @@ const App = () => {
       <h2>Blogs</h2>
       {blogs
         .sort((a, b) => {
-          if (a.likes < b.likes) { return 1; }
-          if (a.likes > b.likes) { return -1; }
+          if (a.likes < b.likes) {
+            return 1;
+          }
+          if (a.likes > b.likes) {
+            return -1;
+          }
           return 0;
         })
-        .map((blog) => <Blog key={blog.id} blog={blog} addLike={addLike} />)}
+        .map((blog) => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            addLike={addLike}
+            deleteBlog={deleteBlog}
+          />
+        ))}
 
-      <Togglable buttonLabel='Add new blog' ref={blogFormRef}>
-        <BlogForm
-          addBlog={addBlog} />
+      <Togglable buttonLabel="Add new blog" ref={blogFormRef}>
+        <BlogForm addBlog={addBlog} />
       </Togglable>
     </div>
   );
