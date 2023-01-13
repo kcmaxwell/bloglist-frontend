@@ -17,14 +17,14 @@ const Blog = ({ blog, addLike, deleteBlog }) => {
 
   return (
     <div style={blogStyle}>
-      <div>
+      <div className='always-visible'>
         {blog.title}{' by '}
         {blog.author}
         <button onClick={() => setVisible(!visible)}>
           {visible ? 'hide' : 'view'}
         </button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className='hidden-content'>
         <div>{blog.url}</div>
         <div>
           Likes: {blog.likes}{' '}
