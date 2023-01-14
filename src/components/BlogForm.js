@@ -46,7 +46,7 @@ function BlogForm({ addBlog }) {
             id='url-input'
           />
         </div>
-        <button type="submit">Create</button>
+        <button type="submit" id='create-blog-button'>Create</button>
       </form>
     </div>
   );
