@@ -83,10 +83,16 @@ const App = () => {
   };
 
   const deleteBlog = async (blogToDelete) => {
-    const response = await blogService.deleteBlog(blogToDelete);
-    if (response.status === 204) {
-      const newBlogs = blogs.filter((blog) => blog.id !== blogToDelete.id);
-      setBlogs(newBlogs);
+    try {
+      const response = await blogService.deleteBlog(blogToDelete);
+      if (response.status === 204) {
+        const newBlogs = blogs.filter((blog) => blog.id !== blogToDelete.id);
+        setBlogs(newBlogs);
+      } else {
+        displayErrorMessage('Cannot delete another user\'s blog');
+      }
+    } catch (error) {
+      displayErrorMessage('Cannot delete another user\'s blog');
     }
   };
 

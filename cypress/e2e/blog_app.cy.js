@@ -7,6 +7,14 @@ describe('Blog app', () => {
       password: 'password123',
     };
     cy.request('POST', 'http://localhost:3003/api/users', user);
+
+    const secondUser = {
+      name: 'Not Kristopher',
+      username: 'notkcmaxwell',
+      password: 'notpassword123',
+    };
+    cy.request('POST', 'http://localhost:3003/api/users', secondUser);
+
     cy.visit('http://localhost:3000');
   });
 
@@ -56,6 +64,58 @@ describe('Blog app', () => {
         .and('have.css', 'color', 'rgb(0, 128, 0)');
 
       cy.contains('view').should('exist');
+    });
+
+    it('A blog can be liked', () => {
+      const newBlog = {
+        title: 'New title',
+        author: 'New author',
+        url: 'New url',
+      };
+      cy.createBlog(newBlog);
+
+      cy.contains('view').click();
+
+      cy.get('#likes').should('contain', '0');
+      cy.get('#like-button').click();
+      cy.get('#likes').should('contain', '1');
+    });
+
+    it('The user that created a blog can delete it', () => {
+      const newBlog = {
+        title: 'New title',
+        author: 'New author',
+        url: 'New url',
+      };
+      cy.createBlog(newBlog);
+
+      cy.contains('view').click();
+
+      cy.get('#delete-button').click();
+
+      cy.contains('view').should('not.exist');
+    });
+
+    it('A user cannot delete another user\'s blog', () => {
+      const newBlog = {
+        title: 'New title',
+        author: 'New author',
+        url: 'New url',
+      };
+      cy.createBlog(newBlog);
+
+      cy.logout();
+
+      cy.login({ username: 'notkcmaxwell', password: 'notpassword123' });
+      cy.contains('view').click();
+      cy.get('#delete-button').click();
+
+      cy.get('.error-message')
+        .should('contain', 'Cannot delete another user\'s blog');
+    });
+
+    it('The blogs are ordered according to likes, most likes first', () => {
+
     });
   });
 });

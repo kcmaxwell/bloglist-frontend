@@ -26,12 +26,12 @@ const Blog = ({ blog, addLike, deleteBlog }) => {
       </div>
       <div style={showWhenVisible} className='hidden-content'>
         <div>{blog.url}</div>
-        <div>
+        <div id='likes'>
           Likes: {blog.likes}{' '}
-          <button onClick={() => addLike(blog)}>Like</button>
+          <button id='like-button' onClick={() => addLike(blog)}>Like</button>
         </div>
         <div>{blog.user.name}</div>
-        <div><button onClick={() => deleteBlog(blog)}>Remove</button></div>
+        <div><button id='delete-button' onClick={() => deleteBlog(blog)}>Remove</button></div>
       </div>
     </div>
   );
