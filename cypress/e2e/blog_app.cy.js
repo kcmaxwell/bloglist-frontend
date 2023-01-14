@@ -77,7 +77,7 @@ describe('Blog app', () => {
       cy.contains('view').click();
 
       cy.get('#likes').should('contain', '0');
-      cy.get('#like-button').click();
+      cy.get('.like-button').click();
       cy.get('#likes').should('contain', '1');
     });
 
@@ -115,7 +115,42 @@ describe('Blog app', () => {
     });
 
     it('The blogs are ordered according to likes, most likes first', () => {
+      const mostLikesBlog = {
+        title: 'Most likes',
+        author: 'Most liked',
+        url: 'New url',
+      };
 
+      const secondMostLikesBlog = {
+        title: 'Second most likes',
+        author: 'Second most liked',
+        url: 'New url',
+      };
+
+      const leastLikesBlog = {
+        title: 'Least likes',
+        author: 'Least liked',
+        url: 'New url',
+      };
+
+      cy.createBlog(leastLikesBlog);
+      cy.createBlog(secondMostLikesBlog);
+      cy.createBlog(mostLikesBlog);
+
+      cy.contains('Most likes').find('.show-button').click();
+      cy.contains('Most likes').parent().find('.like-button').as('mostLikesButton');
+      cy.get('@mostLikesButton').click();
+      cy.get('@mostLikesButton').click();
+      cy.get('@mostLikesButton').click();
+
+      cy.contains('Second most likes').find('.show-button').click();
+      cy.contains('Second most likes').parent().find('.like-button').as('secondMostLikesButton');
+      cy.get('@secondMostLikesButton').click();
+      cy.get('@secondMostLikesButton').click();
+
+      cy.get('.blog-content').eq(0).should('contain', 'Most likes');
+      cy.get('.blog-content').eq(1).should('contain', 'Second most likes');
+      cy.get('.blog-content').eq(2).should('contain', 'Least likes');
     });
   });
 });
