@@ -56,6 +56,8 @@ const App = () => {
       window.localStorage.setItem('loggedUser', JSON.stringify(newUser));
       blogService.setToken(newUser.token);
 
+      displaySuccessMessage(`${newUser.name} logged in`);
+
       setUsername('');
       setPassword('');
     } catch (error) {

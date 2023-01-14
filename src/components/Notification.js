@@ -12,13 +12,15 @@ function Notification({ message, isError }) {
     marginBottom: 10,
   };
 
-  if (isError) { style.color = 'red'; }
+  let className = 'success-message';
+
+  if (isError) { style.color = 'red'; className = 'error-message'; }
 
   if (message === null) {
     return null;
   }
 
-  return <div style={style}>{message}</div>;
+  return <div className={className} style={style}>{message}</div>;
 }
 
 Notification.propTypes = {

@@ -15,6 +15,7 @@ function LoginForm({
         <div>
           Username:
           <input
+            id="username-input"
             type="text"
             value={username}
             name="Username"
@@ -24,13 +25,14 @@ function LoginForm({
         <div>
           Password:
           <input
+            id="password-input"
             type="text"
             value={password}
             name="Password"
             onChange={({ target }) => setPassword(target.value)}
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" id="login-button">Login</button>
       </form>
     </div>
   );
